@@ -18,7 +18,6 @@ void printChoice(){
 bool flag;
 
 void backT(int idx, int cnt){
-    if (idx >= 26 && cnt < K) return;
     if (cnt == K){ // 쌍 완성!
         int num=0;
         for (int j=0; j<N; ++j){
@@ -37,7 +36,9 @@ void backT(int idx, int cnt){
         }
         ans = max(ans, num);
         return;
-    } else if (choice[idx]) {
+    } 
+    if (idx >= 26) return;
+    else if (choice[idx]) {
         // a,n,t,i,c
         backT(idx+1, cnt+1);
     }
@@ -57,7 +58,7 @@ int main(){ ios_base::sync_with_stdio(false); cout.tie(NULL); cin.tie(NULL);
     }
 
     if (K<5){
-        cout << 0;
+        cout << 0 << '\n';
         return 0;
     }
 
@@ -69,7 +70,7 @@ int main(){ ios_base::sync_with_stdio(false); cout.tie(NULL); cin.tie(NULL);
     choice['c' - 'a'] = true;
 
     backT(0,0);
-    cout << ans;
+    cout << ans << '\n';
     
     return 0;
 }
