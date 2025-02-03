@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <stack>
 #include <queue>
 
@@ -37,9 +38,9 @@ void add() {
 	int second = gostack.top();
 	gostack.pop();
 	int  res = top + second;
-	if (res > 10 ^ 9) {
-		cout << "ERROR\n";
-		exit(0);
+	if (res > pow(10,9)) {
+		cout << "ERROR: add res over 10^9: " << res << "\n";
+        return;
 	}
 
 	gostack.push(res);
@@ -60,11 +61,11 @@ void mul() {
 	int second = gostack.top();
 	gostack.pop();
 	int res = top * second;
-	if (res > 10 ^ 9) {
-		cout << "ERROR\n";
+	if (res > pow(10,9)) {
+		cout << "ERROR: mul res over 10^9: " << res << "\n";
 		exit(0);
 	}
-	gostack.push(top*second);
+	gostack.push(res);
 }
 
 int is_minus(int a, int b) {
@@ -92,7 +93,7 @@ void mod() {
 	gostack.pop();
 
 	if (top == 0) {
-		cout << "ERROR\n";
+		cout << "ERROR: mod with 0\n";
 		exit(0);
 	}
 
@@ -103,31 +104,37 @@ void mod() {
 int runProgram(int value, queue<string> program){
     gostack.push(value);
 
-    string command = program.front();
-    program.pop();
-    if (command == "NUM"){
-        int x = stoi(program.front());
+    while(!program.empty()){
+        string command = program.front();
         program.pop();
-        numx(x);
+
+        if (command == "NUM"){
+            int x = stoi(program.front());
+            program.pop();
+            numx(x);
+        }
+        else if (command == "POP") pop();
+        else if (command == "INV") inv();
+        else if (command == "DUP") dup();
+        else if (command == "SWP") swp();
+        else if (command == "ADD") add();
+        else if (command == "SUB") sub();
+        else if (command == "MUL") mul();
+        else if (command == "DIV") div();
+        else if (command == "MOD") mod();
+        else if (command == "END") {
+            break;
+        }
+        else {
+            cout << "ERROR: unknown command: " << command << "\n";
+            return -1;
+        }
     }
-    else if (command == "POP") pop();
-    else if (command == "INV") inv();
-    else if (command == "DUP") dup();
-    else if (command == "SWP") swp();
-    else if (command == "ADD") add();
-    else if (command == "SUB") sub();
-    else if (command == "MUL") mul();
-    else if (command == "DIV") div();
-    else if (command == "MOD") mod();
-    else {
-        cout << "ERROR\n";
-        exit(0);
-    }
-    
 
     if (gostack.size() != 1) {
-        cout << "ERROR" << '\n';
-        exit(0);
+        cout << "ERROR: gostack size is not 1: " << gostack.size() << '\n';
+        while(!gostack.empty()) gostack.pop();
+        return -1;
     }
 
     int res = gostack.top();
@@ -164,7 +171,9 @@ int main() {
                 break;
             }
         }
-        allProgram.push(eachProgram);
+        if (eachProgram.size() > 0)
+            allProgram.push(eachProgram);
+        if (!flag) break;
 
 		int N; // 수행 횟수
 		cin >> N;
@@ -177,6 +186,8 @@ int main() {
         allValues.push(value);
 	}
 
+    // cout << allProgram.size() << ' ' << allValues.size() << '\n';
+
     // run each programs
     while(!allProgram.empty() && !allValues.empty()){
         queue<int> values = allValues.front();
@@ -185,9 +196,13 @@ int main() {
             // run each program
             int value = values.front();
             values.pop();
-            cout << runProgram(value, program) << '\n';
+            int res = runProgram(value, program);
+            if (res == -1) continue;
+            cout << res << '\n';
         }
         allProgram.pop();
+        allValues.pop();
+        cout << '\n';
     }
 
 	return 0;
