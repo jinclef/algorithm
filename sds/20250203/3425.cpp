@@ -7,16 +7,30 @@ using namespace std;
 
 stack<int> gostack;
 
+//! int형 함수로 다 바꾸기.
+bool checkEmpty(){
+    if(gostack.empty()) {
+        cout << "ERROR\n";
+        gostack.push(-1);
+        return false;
+    }
+    return true;
+}
+
 void numx(int x) {
 	gostack.push(x);
 }
 
 void pop() {
+    checkEmpty();
 	gostack.pop();
 }
 
 void inv() {
-	gostack.push(gostack.top() * (-1));
+    checkEmpty();
+    int top = gostack.top();
+    gostack.pop();
+	gostack.push(top* (-1));
 }
 
 void dup() {
@@ -24,21 +38,28 @@ void dup() {
 }
 
 void swp() {
+    checkEmpty();
 	int top = gostack.top();
 	gostack.pop();
+    
+    checkEmpty();
 	int second = gostack.top();
 	gostack.pop();
+
 	gostack.push(top);
 	gostack.push(second);
 }
 
 void add() {
+    checkEmpty();
 	int top = gostack.top();
 	gostack.pop();
-	int second = gostack.top();
+	
+    checkEmpty();
+    int second = gostack.top();
 	gostack.pop();
-	if (top + second > pow(10,9)) {
-		// cout << "ERROR: add res over 10^9: " << res << "\n";
+
+	if (abs(top + second) > pow(10,9)) {
         cout << "ERROR\n";
         if(gostack.empty()) gostack.push(-1);
         return;
@@ -48,21 +69,29 @@ void add() {
 }
 
 void sub() {
+    
+    checkEmpty();
 	int top = gostack.top();
 	gostack.pop();
-	int second = gostack.top();
+	
+    checkEmpty();
+    int second = gostack.top();
 	gostack.pop();
 
 	gostack.push(second - top);
 }
 
 void mul() {
+    
+    checkEmpty();
 	int top = gostack.top();
 	gostack.pop();
-	int second = gostack.top();
+	
+    checkEmpty();
+    int second = gostack.top();
 	gostack.pop();
-	if (top * second > pow(10,9)) {
-		// cout << "ERROR: mul res over 10^9: " << res << "\n";
+
+	if (abs(top * second) > pow(10,9)) {
         cout << "ERROR\n";
         if(gostack.empty()) gostack.push(-1);
         return;
@@ -78,23 +107,36 @@ int is_minus(int a, int b) {
 }
 
 void div() {
+    checkEmpty();
 	int top = gostack.top();
 	gostack.pop();
-	int second = gostack.top();
+	
+    checkEmpty();
+    int second = gostack.top();
 	gostack.pop();
+
+    if (top == 0) {
+        cout << "ERROR\n";
+        if(gostack.empty()) gostack.push(-1);
+        return;
+	}
+
 	int res = abs(second) / abs(top) * is_minus(top, second);
 
 	gostack.push(res);
 }
 
 void mod() {
+    
+    checkEmpty();
 	int top = gostack.top();
 	gostack.pop();
-	int second = gostack.top();
+	
+    checkEmpty();
+    int second = gostack.top();
 	gostack.pop();
 
 	if (top == 0) {
-		// cout << "ERROR: mod with 0\n";
         cout << "ERROR\n";
         if(gostack.empty()) gostack.push(-1);
         return;
@@ -129,14 +171,12 @@ int runProgram(int value, queue<string> program){
             break;
         }
         else {
-            // cout << "ERROR: unknown command: " << command << "\n";
             cout << "ERROR\n";
             return -1;
         }
     }
 
     if (gostack.size() != 1) {
-        // cout << "ERROR: gostack size is not 1: " << gostack.size() << '\n';
         cout << "ERROR\n";
         while(!gostack.empty()) gostack.pop();
         return -1;
@@ -191,9 +231,7 @@ int main() {
         allValues.push(value);
 	}
 
-    // cout << allProgram.size() << ' ' << allValues.size() << '\n';
-
-    // run each programs
+    // run programs
     while(!allProgram.empty() && !allValues.empty()){
         queue<int> values = allValues.front();
         queue<string> program = allProgram.front();
