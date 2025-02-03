@@ -37,12 +37,13 @@ void add() {
 	gostack.pop();
 	int second = gostack.top();
 	gostack.pop();
-	int  res = top + second;
-	if (res > pow(10,9)) {
-		cout << "ERROR: add res over 10^9: " << res << "\n";
+	if (top + second > pow(10,9)) {
+		// cout << "ERROR: add res over 10^9: " << res << "\n";
+        cout << "ERROR\n";
+        if(gostack.empty()) gostack.push(-1);
         return;
 	}
-
+    int res = top + second;
 	gostack.push(res);
 }
 
@@ -60,11 +61,13 @@ void mul() {
 	gostack.pop();
 	int second = gostack.top();
 	gostack.pop();
-	int res = top * second;
-	if (res > pow(10,9)) {
-		cout << "ERROR: mul res over 10^9: " << res << "\n";
-		exit(0);
+	if (top * second > pow(10,9)) {
+		// cout << "ERROR: mul res over 10^9: " << res << "\n";
+        cout << "ERROR\n";
+        if(gostack.empty()) gostack.push(-1);
+        return;
 	}
+	int res = top * second;
 	gostack.push(res);
 }
 
@@ -75,7 +78,6 @@ int is_minus(int a, int b) {
 }
 
 void div() {
-
 	int top = gostack.top();
 	gostack.pop();
 	int second = gostack.top();
@@ -86,15 +88,16 @@ void div() {
 }
 
 void mod() {
-
 	int top = gostack.top();
 	gostack.pop();
 	int second = gostack.top();
 	gostack.pop();
 
 	if (top == 0) {
-		cout << "ERROR: mod with 0\n";
-		exit(0);
+		// cout << "ERROR: mod with 0\n";
+        cout << "ERROR\n";
+        if(gostack.empty()) gostack.push(-1);
+        return;
 	}
 
 	int is_minus = (second < 0) ? -1 : 1;
@@ -126,13 +129,15 @@ int runProgram(int value, queue<string> program){
             break;
         }
         else {
-            cout << "ERROR: unknown command: " << command << "\n";
+            // cout << "ERROR: unknown command: " << command << "\n";
+            cout << "ERROR\n";
             return -1;
         }
     }
 
     if (gostack.size() != 1) {
-        cout << "ERROR: gostack size is not 1: " << gostack.size() << '\n';
+        // cout << "ERROR: gostack size is not 1: " << gostack.size() << '\n';
+        cout << "ERROR\n";
         while(!gostack.empty()) gostack.pop();
         return -1;
     }
