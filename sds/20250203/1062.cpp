@@ -15,27 +15,33 @@ void printChoice(){
     cout << '\n';
 }
 
+bool flag;
+
 void backT(int idx, int cnt){
-    if (cnt >= N){ // 쌍 완성!
-        printChoice();
+    if (idx >= 26 && cnt < K) return;
+    if (cnt == K){ // 쌍 완성!
+        int num=0;
         for (int j=0; j<N; ++j){
             string target = voca[j];
+            flag = true;
             for (int m = 0; m < target.length(); m++){
                 char a = target[m];
                 if (choice[a-'a'] == false){
-                    cnt = -1;
+                    flag = false;
                     break;
                 }
             }
+            if(flag) {
+                num++;
+            }
         }
-        cout << "result cnt: " << cnt << '\n';
-        ans = max(ans, cnt);
+        ans = max(ans, num);
         return;
     } else if (choice[idx]) {
-        cout << "pre valued: " << idx << " : " << choice[idx] << '\n';
-        return; // a,n,t,i,c
+        // a,n,t,i,c
+        backT(idx+1, cnt+1);
     }
-    backT(idx, cnt);
+    backT(idx+1, cnt);
     choice[idx] = true;
     backT(idx+1, cnt+1);
     choice[idx] = false;
@@ -48,6 +54,11 @@ int main(){ ios_base::sync_with_stdio(false); cout.tie(NULL); cin.tie(NULL);
     for (int i = 0 ; i<N; i++){
         string A;
         cin >> voca[i];
+    }
+
+    if (K<5){
+        cout << 0;
+        return 0;
     }
 
     // a,n,t,i,c
