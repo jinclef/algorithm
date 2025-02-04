@@ -57,17 +57,17 @@ int main(){
 
    // ab: -> , cd: <-
    int vectlen = n*n;
-   int abidx=0, cdidx=vectlen-1, ans=0;
-   
+   int abidx=0, cdidx=vectlen-1;
+   long long ans=0;
+
    while(abidx<vectlen && cdidx>=0){
         long long sum = ab[abidx] + cd[cdidx];
-    
         // cout << abidx << ", " << cdidx << ", sum: " << sum << '\n';
         if(sum == 0){
             // cout << "success: " << ans << ' ' << abidx << ' ' << cdidx << '\n'; 
             // is there more 0 near?
-            int tempA=1;
-            int tempB=1;
+            long long tempA=1;
+            long long tempB=1;
             long long tempabv = ab[abidx];
             long long tempcdv = cd[cdidx];
             while((abidx+tempA<vectlen) && (ab[abidx+tempA] == tempabv)) {
@@ -81,7 +81,6 @@ int main(){
             // no more same value
             abidx+=tempA;
             cdidx-=tempB;
-
             // cout << "updated idx: " << abidx << " " << cdidx << '\n';
         }
         else if(sum > 0) cdidx--;
