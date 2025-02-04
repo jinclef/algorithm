@@ -6,7 +6,7 @@ using namespace std;
 int N, K; // N < 50, K < 26
 int ans; // max
 bool choice[26] = {false, };
-string voca[26];
+string voca[50];
 
 void printChoice(){
     for (int i =0;i<26;i++){
