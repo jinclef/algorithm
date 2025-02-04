@@ -23,13 +23,12 @@ void printVisit(){
 }
 
 void putQueen(int row){
-    printVisit();
-    cout << "\nN: " << N << ", ans: " << ans << ", cnt : " << cnt << ", row: " << row << '\n';
-    if (row == N-1 && cnt == N-1) { // row == N-1
+    // printVisit();
+    if (cnt == N) {
         ans++;
-        cnt = 0;
         return;
     }
+    // cout << "\nN: " << N << ", ans: " << ans << ", cnt : " << cnt << ", row: " << row << '\n';
     
     // 현재 row에서 넣을 수 있는지 본다.
     for (int y=0; y<N; ++y){
@@ -38,6 +37,8 @@ void putQueen(int row){
             visited[row][y] = true;
             cnt++;
             putQueen(row+1);
+            visited[row][y]=false;
+            cnt--;
         } else{
             bool flag = true;
             // check col
@@ -72,9 +73,11 @@ void putQueen(int row){
             }
             if(flag) {// success    
                 cnt++;
-                cout << "success: " << row << ' ' << y<<'\n';
+                // cout << "success: " << row << ' ' << y<<'\n';
                 visited[row][y] = true;
                 putQueen(row+1);
+                visited[row][y]=false;
+                cnt--;
             }
         }
     }
