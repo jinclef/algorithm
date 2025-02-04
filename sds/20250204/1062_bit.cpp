@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -12,8 +13,8 @@ long long vocabit[51];
 
 void backt(int idx, int cnt, long long choice){
     if(cnt == CNT){
-        int temp = 0 ;
-        for (int i = 0; i<N;++i){
+        int temp = 0;
+        for (int i = 0; i<N; ++i){
             // compare voca and choice
             if ((vocabit[i] & choice) == vocabit[i]) temp++;
         }
@@ -28,7 +29,7 @@ void backt(int idx, int cnt, long long choice){
         //1. not choose
         backt(idx+1, cnt, choice);
         //2. choose
-        backt(idx+1, cnt+1, (choice | (1<<(idx+1))));
+        backt(idx+1, cnt+1, (choice | (1<<(idx))));
     }
 }
 
