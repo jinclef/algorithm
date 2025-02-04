@@ -7,29 +7,39 @@ bool visited[MAX_LEN+1][MAX_LEN+1];
 int N, ans, cnt;
 
 void initVisit(){
-    for (int i =0;i<N;i++)
-        for (int j=0;j<N;j++)
+    for (int i =0;i<N;++i)
+        for (int j=0;j<N;++j)
             visited[i][j]=false;
 }
 
+void printVisit(){
+    for (int i=0; i<N; ++i){
+        for (int j=0; j<N; ++j){
+            cout << visited[i][j] << ' ';
+        }
+        cout << "|\n";
+    }
+
+}
+
 void putQueen(int row){
-    if (cnt == N) { // row == N-1
+    printVisit();
+    cout << "\nN: " << N << ", ans: " << ans << ", cnt : " << cnt << ", row: " << row << '\n';
+    if (row == N-1 && cnt == N-1) { // row == N-1
         ans++;
         cnt = 0;
-        initVisit();
         return;
     }
-    if (row > N) {ans=0; return; } // 어차피 못오긴 함.
     
     // 현재 row에서 넣을 수 있는지 본다.
     for (int y=0; y<N; ++y){
-        bool flag = true;
-        if (row == 0){
+        if (row == 0){ //위가 없음. 검사 안해도 됨.
+            cnt = 0;
             visited[row][y] = true;
             cnt++;
             putQueen(row+1);
-            visited[row][y]=false;
-        } else{        
+        } else{
+            bool flag = true;
             // check col
             for (int x=0;x<row;++x){
                 if(visited[x][y]) {
@@ -60,11 +70,11 @@ void putQueen(int row){
                     }
                 }
             }
-            if(flag) {// success
-                visited[row][y] = true;
+            if(flag) {// success    
                 cnt++;
+                cout << "success: " << row << ' ' << y<<'\n';
+                visited[row][y] = true;
                 putQueen(row+1);
-                visited[row][y] = false;
             }
         }
     }
