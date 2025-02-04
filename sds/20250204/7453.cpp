@@ -1,16 +1,16 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cmath>
 
 using namespace std;
 
-int n;
+int n; // <=4000
 long long arr[4][4002];
 vector<long long> ab;
 vector<long long> cd;
 
 int main(){
+    ios_base::sync_with_stdio(false); cout.tie(NULL); cin.tie(NULL);
     // 입력 받기
     cin >> n;
     for (int i=0;i<n;++i){
@@ -46,32 +46,43 @@ int main(){
    sort(ab.begin(), ab.end());
    sort(cd.begin(), cd.end());
    
-    /*for (int i=0;i<pow(n,2);++i){
-        cout << ab[i] << ' ' ;
-    }
-    cout << '\n';
-    for (int i=0;i<pow(n,2);++i){
-        cout << cd[i] << ' ';
-    }
-    cout << '\n';*/
+    // for (int i=0;i<n*n;++i){
+    //     cout << "(" << i << "," << ab[i] << ") " ;
+    // }
+    // cout << '\n';
+    // for (int i=0;i<n*n;++i){
+    //     cout << "(" << i << "," << cd[i] << ") " ;
+    // }
+    // cout << '\n';
 
    // ab: -> , cd: <-
-   int vectlen = pow(n,2);
+   int vectlen = n*n;
    int abidx=0, cdidx=vectlen-1, ans=0;
-   while(abidx<vectlen && cdidx<vectlen){
+   
+   while(abidx<vectlen && cdidx>=0){
         long long sum = ab[abidx] + cd[cdidx];
     
-        // cout << abidx << ": " << ab[abidx] << ", " << cdidx <<  ": " << cd[cdidx] << ", sum: " << sum << '\n';
+        // cout << abidx << ", " << cdidx << ", sum: " << sum << '\n';
         if(sum == 0){
-            ans++;
-            // cout << "success: " << ans << '\n'; 
-            // idx 옮기기
-            int tempA=0;
-            int tempB=0;
-            while(ab[abidx] == ab[++abidx]) tempA++;
-            while(cd[cdidx] == cd[--cdidx]) tempB++;
-            // cout << "updated idx: " << abidx << " " << cdidx << '\n';
+            // cout << "success: " << ans << ' ' << abidx << ' ' << cdidx << '\n'; 
+            // is there more 0 near?
+            int tempA=1;
+            int tempB=1;
+            long long tempabv = ab[abidx];
+            long long tempcdv = cd[cdidx];
+            while((abidx+tempA<vectlen) && (ab[abidx+tempA] == tempabv)) {
+                tempA++;
+            }
+            while((cdidx-tempB>=0) && (cd[cdidx-tempB] == tempcdv)) {
+                tempB++;
+            }
             ans += (tempA*tempB);
+            
+            // no more same value
+            abidx+=tempA;
+            cdidx-=tempB;
+
+            // cout << "updated idx: " << abidx << " " << cdidx << '\n';
         }
         else if(sum > 0) cdidx--;
         else /* sum<0 */ abidx++;
