@@ -151,7 +151,9 @@ int main(){
     int unb_etcs = min((int)myetc.size(), 2); //under bound
     int upb_aeious = L-2;                     //upper bound
 
-    while(upb_aeious < (int)myaeiou.size()){ // 개수 모자라서 그만큼 못해줌.
+    // cout << "bound " << unb_etcs << ' ' << upb_aeious << '\n';
+
+    while(upb_aeious > (int)myaeiou.size()){ // 개수 모자라서 그만큼 못해줌.
         upb_aeious--;
     }
      
