@@ -11,7 +11,7 @@ vector<char> myaeiou;
 vector<char> myetc;
 
 bool selectedA[5];
-int selectedZ[22] = {0, }; // 0: 방문전 -1: 방문완료 1: 방문중
+bool selectedZ[22]; // 0: 방문전 -1: 방문완료 1: 방문중
 
 bool isAeiou(char k){
     for (int i=0;i<5; ++i){
@@ -36,47 +36,49 @@ bool hasEtc(char k){
 
 void doneVisit(){
     for (int i=0;i<22;++i){
-        if(selectedZ[i]==1) selectedZ[i]=-1;
+        if(selectedZ[i]) selectedZ[i]=false;
     }
 }
 
-void printVisit(auto* arr, int size){
+void printStructure(auto* arr, int size){
     for (int i=0;i<size;++i){
         cout << arr[i] << ' ';
     }
     cout << '\n';
 }
 
-void combinationEtcs(int len, int count){ //TODO: 얘도 백트레킹으로 뽑기
-    int idx=0;
-    bool flag = false;
+// void combinationEtcs(int len, int count){ //TODO: 얘도 백트레킹으로 뽑기
+//     int idx=0;
+//     bool flag = false;
 
-    while(count <= len){
-        // cout << count << ' ' << len << '\n';
-        printVisit(selectedZ, 22);
-        if(count == len) {
-            flag = true;
-            break;
-        }
-        // cout << idx << '-' ;
-        // printVisit();
-        if(hasEtc(etcs[idx]) && selectedZ[idx] == 0){
-            selectedZ[idx] = 1;
-            count++;
-        }
-        idx++;
-    }
-    return;
-}
-
+//     while(count <= len){
+//         // cout << count << ' ' << len << '\n';
+//         printStructure(selectedZ, 22);
+//         if(count == len) {
+//             flag = true;
+//             break;
+//         }
+//         // cout << idx << '-' ;
+//         // printStructure();
+//         if(hasEtc(etcs[idx]) && selectedZ[idx] == 0){
+//             selectedZ[idx] = 1;
+//             count++;
+//         }
+//         idx++;
+//     }
+//     return;
+// }
+vector<vector<char>> totalPwds;
 void printCanPwd(){
     vector<char> total;
     for(int i=0;i<5;++i){
         if(selectedA[i]) total.push_back(aeiou[i]);
     }
     for(int i=0;i<21;++i){
-        if(selectedZ[i]==1) total.push_back(etcs[i]);
+        if(selectedZ[i]) total.push_back(etcs[i]);
     }
+
+    if (total.size() != L) return;
 
     sort(total.begin(), total.end());
     // do{
@@ -85,22 +87,34 @@ void printCanPwd(){
     //     cout << '\n';
     // } while(next_permutation(total.begin(), total.end()));
 
-    // 무조건 오름차순
-    for(auto it=total.begin();it!=total.end();++it)
-        cout << *it;
-    cout << '\n';
-    doneVisit();
+    totalPwds.push_back(total);
+    return;
+}
+
+
+void combinationEtcs(int idx, int cnt, int idxLimit, int limit){
+    // cout << "combinationEtcs: " << idx << " " << cnt << " " << idxLimit << ' '<< limit << '\n';
+    // printStructure(selectedZ, 22);
+    if(cnt == limit) {
+        // TODO?
+        printCanPwd();
+        return;
+    }
+    if (idx>=22) return;
+    if(hasEtc(etcs[idx])){
+        selectedZ[idx] = true;
+        combinationEtcs(idx+1, cnt+1, idxLimit, limit);
+        selectedZ[idx] = false;
+    }
+    combinationEtcs(idx+1, cnt, idxLimit, limit);
+    return;
 }
 
 void makePwd(int idx, int cnt, int aeiouCnt, int etcCnt){
-    printVisit(selectedA, 5);
-    cout << "makepwd: " << idx << " " << cnt << " " << aeiouCnt << ' '<<etcCnt << '\n';
+    // printStructure(selectedA, 5);
+    // cout << "makepwd: " << idx << " " << cnt << " " << aeiouCnt << ' '<<etcCnt << '\n';
     if(cnt == aeiouCnt) {
-        while(true){ // left unvisitedCombinations
-            combinationEtcs(etcCnt, 0); // 자음 조합 찾기
-            printCanPwd();
-        }
-        doneVisit();
+        combinationEtcs(0,0, etcCnt, etcCnt); // 자음 조합 찾기
         return;
     }
     if(idx>=5) {
@@ -149,11 +163,20 @@ int main(){
         tryEtcs = L-aeious;
         if(tryEtcs<unb_etcs) break;
 
-        cout<< "let's loop " << aeious << ' ' << tryEtcs << '\n';
+        // cout<< "let's loop " << aeious << ' ' << tryEtcs << '\n';
         makePwd(0, 0, aeious, tryEtcs);
-        cout << "exit loop\n";
+        // cout << "exit loop\n";
         aeious--;
+        doneVisit();
     }
-    
+    // print all pwds in ASC
+    sort(totalPwds.begin(), totalPwds.end());
+    // 무조건 오름차순
+    for (auto gt=totalPwds.begin();gt!=totalPwds.end();++gt){
+        vector<char> total = *gt;
+        for(auto it=total.begin();it!=total.end();++it)
+            cout << *it;
+        cout << '\n';
+    }
     return 0;
 }
