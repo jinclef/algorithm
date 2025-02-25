@@ -7,7 +7,6 @@ int main(){
     while(true){
         int n;
         cin >> n;
-        if(n==0) break;
     
         ll times=1;
         ll partpow = 10;
