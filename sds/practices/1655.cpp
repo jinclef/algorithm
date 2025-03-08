@@ -5,6 +5,7 @@
 using namespace std;
 const int MAX= 100000;
 const int INF = -10001; // 안 들어올 수
+const int MAXINF = -INF; // 안 들어올 수
 
 vector<int> arr;
 priority_queue<int> lt; // back 작 -- 큰 front // front 가 큰거
@@ -72,7 +73,7 @@ void update(int x, int all){
                 lt.push(l);
                 l=mid;
                 mid=r;
-                r =  min(x, gt.top());
+                r = min(x, gt.top());
                 if(gt.top() <= x){
                     gt.pop();
                     gt.push(x);
@@ -86,18 +87,18 @@ void update(int x, int all){
     // cout << l << ", " << mid << ", " << r << '\n'; 
 }
 
-int main(){ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+int main(){
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     int n;
     cin >> n;
 
-    for (int i=1; i<=n;i++){
+    for (int i=1; i<=n; i++){
         int a;
         cin >> a;
         if(i==1) mid = a;
         else if(i==2) {
-            if(mid <= a) r = a; // 등호는 어디가든 상관없음 어차피 두개밖에 없어서.
-            else if(mid > a) r = mid;
-
+            gt.push(r);
+            r = max(mid, a);
             mid = min(mid, a);
         } else if(i>=3){ // 3
             // cout << "insert " << a << " when " << i << '\n';
