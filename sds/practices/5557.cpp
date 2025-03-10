@@ -43,8 +43,8 @@ int nums[101];
 int savedStepSum[101];
 
 ll totalCase(int curIdx, int curSum){
-    if(curIdx+1 >= N) {
-        return 1; // 기본 종료조건
+    if(curIdx+1 == N-1) {
+        if(curSum == nums[N-1]) return 1; else return 0;
     }
 
     ll partSum = curSum + nums[curIdx+1];
