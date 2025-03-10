@@ -41,11 +41,14 @@ int nums[101];
 // }
 
 int savedStepSum[101];
+ll savedStepCnt[101][21]; // totalCase(curIdx, curSum) = savedStepCnt[curIdx][curSum] -> -1이 아니면 재사용한다.
 
 ll totalCase(int curIdx, int curSum){
     if(curIdx+1 == N-1) {
         if(curSum == nums[N-1]) return 1; else return 0;
     }
+
+    if(savedStepCnt[curIdx][curSum] != -1) return savedStepCnt[curIdx][curSum];
 
     ll partSum = curSum + nums[curIdx+1];
     ll partSub = curSum - nums[curIdx+1];
@@ -53,10 +56,12 @@ ll totalCase(int curIdx, int curSum){
     bool canSum = partSum >=0 && partSum <= 20;
     bool canSub = partSub >=0 && partSub <= 20;
 
-    if(canSum && canSub) return totalCase(curIdx+1, partSum) + totalCase(curIdx+1, partSub);
-    else if (canSum && !canSub) return totalCase(curIdx+1, partSum);
-    else if (!canSum && canSub) return totalCase(curIdx+1, partSub);
-    else return 0; // 계산이 안되는 경우. 현실적으로 없음
+    if (canSum && canSub)       savedStepCnt[curIdx][curSum] = totalCase(curIdx+1, partSum) + totalCase(curIdx+1, partSub);
+    else if (canSum && !canSub) savedStepCnt[curIdx][curSum] = totalCase(curIdx+1, partSum);
+    else if (!canSum && canSub) savedStepCnt[curIdx][curSum] = totalCase(curIdx+1, partSub);
+    else                        savedStepCnt[curIdx][curSum] = 0; // 계산이 안되는 경우. 현실적으로 없음
+
+    return savedStepCnt[curIdx][curSum];
 }
 
 int main(){
@@ -64,17 +69,24 @@ int main(){
 
     // init
     for (int i=0; i<100; i++){
-        for (int j=0; j<2; j++){
-            subsum[i][j] = -1;
+        for (int j=0; j<21; j++){
+            savedStepCnt[i][j] = -1;
         }
     }
-    
+
     for (int i=0; i<N; i++){
         cin >> nums[i];
     }
     
     cnt = totalCase(0, nums[0]);
     cout << cnt << '\n';
+
+    // for (int i=0; i<100; i++){
+    //     for (int j=0; j<21; j++){
+    //         cout << savedStepCnt[i][j] << ' ';
+    //     }
+    //     cout << '\n';
+    // }
 
     return 0;
 }
