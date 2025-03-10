@@ -43,7 +43,9 @@ int nums[101];
 int savedStepSum[101];
 
 ll totalCase(int curIdx, int curSum){
-    if(curIdx+1 >= N) return 1; // 기본 종료조건
+    if(curIdx+1 >= N) {
+        return 1; // 기본 종료조건
+    }
 
     ll partSum = curSum + nums[curIdx+1];
     ll partSub = curSum - nums[curIdx+1];
@@ -61,8 +63,8 @@ int main(){
     cin >> N;
 
     // init
-    for (int i=0;i<100;i++){
-        for (int j=0;j<2;j++){
+    for (int i=0; i<100; i++){
+        for (int j=0; j<2; j++){
             subsum[i][j] = -1;
         }
     }
