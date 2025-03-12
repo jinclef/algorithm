@@ -49,14 +49,7 @@ ll findSubsum(int target_s, int target_e, int node_s, int node_e, ll node_idx){ 
     if(node_e < target_s || node_s > target_e) return 0;
     // 1. node가 target에 포함되거나 같으면 그 node 그대로 반환
     else if(target_s <= node_s && target_e >= node_e) return arr[node_idx];
-    // // 2. 아예 밖이면 양쪽 다 비교하기
-    // if(node_s < target_s && target_e < node_e) return findSubsum(target_s, target_e, node_s, node_mid, node_idx*2) + findSubsum(target_s, target_e, node_mid+1, node_e, node_idx*2+1);
-    // // 3. node가 target에 걸치면 mid끼리 비교하기
-    // else{
-    //     int target_mid = (target_s + target_e) / 2;
-    //     if(node_mid >= target_mid) return findSubsum(target_s, target_e, node_s, node_mid, node_idx*2); // 왼쪽
-    //     else return findSubsum(target_s, target_e, node_mid+1, node_e, node_idx*2+1); // 오른쪽
-    // }
+    // 2. node가 target에 걸치면 mid끼리 비교하기
     else {
         return findSubsum(target_s, target_e, node_s, node_mid, node_idx*2) + findSubsum(target_s, target_e, node_mid+1, node_e, node_idx*2+1);
     }
