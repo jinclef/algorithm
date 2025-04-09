@@ -37,22 +37,8 @@ int main(){
     //     if(pairIdx == -1) return 0;
     //     else pairs[i] = pairIdx;
     // }
-    string cals = "(";
+
     // calculate
-    for (int i=0; i<brackets.length(); i++){
-        if(brackets[i] == '(' || brackets[i] == '['){
-            if(i-1>=0 && (brackets[i-1] == ')' || brackets[i-1] == ']')) cals.append("+(");
-            
-            if(brackets[i] == '(') cals.append("2*(");
-            else if(brackets[i] == '[') cals.append("3*(");
-        }
-        else if(brackets[i] == ')' || brackets[i] == ']'){
-            if(i-1>=0 && (brackets[i-1] == ')' || brackets[i-1] == ']')) cals.append(")*");
-            cals.append("1)");
-        }
-    }
-
-    cout << cals <<'\n';
-
+     
     return 0;
 }

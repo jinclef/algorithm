@@ -4,7 +4,6 @@
 // 2. 근데 값 변경 -> tree
 
 #include <iostream>
-#include <cmath>
 using namespace std;
 typedef long long ll;
 
