@@ -44,7 +44,6 @@ void backtrack(string curr, bool used[], int len){
     }
 }
 
-
 int solution(string numbers) {
     int answer = 0;
     
@@ -57,13 +56,10 @@ int solution(string numbers) {
     bool used[8] = {false};
     backtrack("", used, numbers.length());
     
-    
     // 2. set 돌면서 prime 인지 확인
     eratos();
-    
     for (auto p : numset){
         if (checkPrime(p)) answer++;
     }
-    
     return answer;
 }
