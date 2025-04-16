@@ -11,7 +11,7 @@ int solution(vector<int> citations) {
     int answer = 0;
     int tempH = citations[0];
     
-    // 1. 내림차순 정렬
+    // 1. 오름차순 정렬
     sort(citations.begin(), citations.end());
     
     // 2. 최대 h 찾기
