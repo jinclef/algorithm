@@ -5,7 +5,6 @@
 #include <iostream>
 
 // 논문 인용 수 기준 정렬
-// 같은 값이 들어 있는 경우에 대해서 처리 필요.
 using namespace std;
 
 int solution(vector<int> citations) {
