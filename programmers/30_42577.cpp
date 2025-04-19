@@ -21,17 +21,6 @@ bool solution(vector<string> phone_book) {
     
     sort(sort_with_length.begin(), sort_with_length.end(), compare);
     
-//     for (int i=0; i<sort_with_length.size(); i++){
-//         cout << sort_with_length[i].first << ',' << sort_with_length[i].second << " | ";
-//     }
-//     cout << '\n';
-    
-//     for (int i=0; i<sort_with_length.size(); i++){
-//         cout << phone_book[sort_with_length[i].first] << ' ';
-//     }
-//     cout << '\n';
-//     cout << '\n';
-    
     int prefix_idx = phone_book.size()-1;
     int word_idx = 0;
     while(prefix_idx > word_idx){
