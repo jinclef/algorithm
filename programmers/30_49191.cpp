@@ -50,15 +50,6 @@ int solution(int n, vector<vector<int>> results) {
         if(vs[i].first.size() + vs[i].second.size() >= n-1) ranks[i] = vs[i].second.size()+1;
     }
     
-    // for(int i=1; i<=n; i++){
-    //     cout << i << "번 선수\n";
-    //     for(auto a: vs[i].first) cout << a << ' ';
-    //     cout << "winned, ";
-    //     for(auto b: vs[i].second) cout << b << ' ';
-    //     cout << "losed.";
-    //     cout << '\n';
-    // }
-    
     for(int i=1; i<=n; i++){
         if(ranks[i]!=0) {
             answer++;
