@@ -31,7 +31,7 @@ int solution(int m, int n, vector<vector<int>> puddles) {
             dp[i][j] = 1;       
         }
     }
-    
+
     // 물웅덩이에서 가능한 경로 없음.
     for(int i=0; i<puddles.size(); i++){
         // puddles[i] : vector<int>. 좌표
@@ -39,8 +39,6 @@ int solution(int m, int n, vector<vector<int>> puddles) {
         int y = puddles[i][1]-1;
         dp[y][x] = 0;
     }
-    
-    // cout << "INIT\n";
     // printDP(n,m);
     
     for (int i=0; i<n; i++){
@@ -53,8 +51,6 @@ int solution(int m, int n, vector<vector<int>> puddles) {
             // printDP(n,m);
         }
     }
-    
     answer = dp[n-1][m-1] % prime;
-    
     return answer;
 }
